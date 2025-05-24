@@ -43,8 +43,8 @@
       background-color: #db7093;
     }
     #response {
-      margin-top: 30px;
-      font-size: 1.2em;
+      margin-top: 100px;
+      font-size: 1.5em;
       color: #fff5f5;
     }
     #yippeeImage {
@@ -124,28 +124,49 @@
     <source src="maye - Yours (Official Audio).mp3" type="audio/mpeg">
     Your browser does not support the audio element.
   </audio>
-  <h1 id="question">Will you go to prom with me?</h1>
-  <div class="button-container">
-    <button id="yesBtn">Yes</button>
-    <button id="noBtn">No</button>
+  <div id="content">
+    <h1 id="question">Will you go to prom with me?</h1>
+    <div class="button-container">
+      <button id="yesBtn">Yes</button>
+      <button id="noBtn">No</button>
+    </div>
+    <div id="response"></div>
   </div>
-  <div id="response"></div>
 
   <script>
     const yesBtn = document.getElementById("yesBtn");
     const noBtn = document.getElementById("noBtn");
     const responseDiv = document.getElementById("response");
-    const questionHeader = document.getElementById("question");
+    const contentDiv = document.getElementById("content");
+    const bgMusic = document.getElementById("bgMusic");
 
     let noClickCount = 0;
     let yesBtnScale = 1;
 
+    const noMessages = [
+      "What??",
+      "Did you miss click?💖",
+      "click the other button girl😘",
+      "ok you're starting to hurt my feelings",
+      "Don't make me beg...",
+      "You're breaking my heart 💔",
+      "ok fine just go with zoe at this point",
+      "why are you still clicking no?",
+      "I hate you",
+      "yes is that way <----",
+      "you so enjoy making me suffer",
+      "kys (no you don't get to punch me)",
+      "I'm running out of things to say just click yes",
+      "STOPPP!!!!",
+      "you're dead to me.",
+      "FINAL OFFER: You get a hug and a kiss"
+    ];
+
     function playMusic() {
-      const bgMusic = document.getElementById("bgMusic");
-      bgMusic.play();
-      document.removeEventListener('click', playMusic);
+      bgMusic.play().catch(() => {});
     }
-    document.addEventListener('click', playMusic);
+    document.addEventListener('click', playMusic, { once: true });
+    document.addEventListener('DOMContentLoaded', playMusic);
 
     function createHeart() {
       const heart = document.createElement('div');
@@ -154,10 +175,7 @@
       heart.style.top = '100%';
       heart.style.animationDuration = Math.random() * 3 + 2 + 's';
       document.body.appendChild(heart);
-
-      setTimeout(() => {
-        heart.remove();
-      }, 5000);
+      setTimeout(() => heart.remove(), 5000);
     }
     setInterval(createHeart, 300);
 
@@ -168,10 +186,7 @@
         sparkle.style.left = `${x + (Math.random() - 0.5) * 50}px`;
         sparkle.style.top = `${y + (Math.random() - 0.5) * 50}px`;
         document.body.appendChild(sparkle);
-
-        setTimeout(() => {
-          sparkle.remove();
-        }, 1000);
+        setTimeout(() => sparkle.remove(), 1000);
       }
     }
 
@@ -183,10 +198,7 @@
         confetti.style.top = '-20px';
         confetti.style.setProperty('--hue', Math.floor(Math.random() * 360));
         document.body.appendChild(confetti);
-
-        setTimeout(() => {
-          confetti.remove();
-        }, 3000);
+        setTimeout(() => confetti.remove(), 3000);
       }
     }
 
@@ -194,7 +206,7 @@
       createSparkles(e.clientX, e.clientY);
       launchConfetti();
       setTimeout(() => {
-        document.body.innerHTML = `
+        contentDiv.innerHTML = `
           <h1 style="animation: fadeIn 2s ease-in-out;">Yippee can't wait :D</h1>
           <img id="yay" src="yay.png" alt="yay">
         `;
@@ -206,8 +218,11 @@
       yesBtnScale *= 1.1;
       yesBtn.style.transform = `scale(${yesBtnScale})`;
 
-      const customMessage = "Aww, think again? 🥺"; // Replace with your own message
-      responseDiv.textContent = customMessage;
+      if (noClickCount <= noMessages.length) {
+        responseDiv.textContent = noMessages[noClickCount - 1];
+      } else {
+        responseDiv.textContent = noMessages[noMessages.length - 1];
+      }
     });
   </script>
 </body>
