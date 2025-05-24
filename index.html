@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Promposal</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(to top, #ffc0cb, #ff69b4);
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: cover;
+      color: #fff;
+      text-align: center;
+      padding-top: 100px;
+      overflow-x: hidden;
+    }
+    h1 {
+      font-size: 2em;
+      margin-bottom: 40px;
+    }
+    .button-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    button {
+      padding: 15px 30px;
+      font-size: 1em;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    #yesBtn {
+      background-color: #ffb6c1;
+    }
+    #noBtn {
+      background-color: #db7093;
+    }
+    #response {
+      margin-top: 30px;
+      font-size: 1.2em;
+      color: #fff5f5;
+    }
+    #yippeeImage {
+      margin-top: 20px;
+      max-width: 90%;
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+  <audio autoplay loop>
+    <source src="your-soundtrack.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+  <h1 id="question">Will you go to prom with me?</h1>
+  <div class="button-container">
+    <button id="yesBtn">Yes</button>
+    <button id="noBtn">No</button>
+  </div>
+  <div id="response"></div>
+
+  <script>
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
+    const responseDiv = document.getElementById("response");
+    const questionHeader = document.getElementById("question");
+
+    let noClickCount = 0;
+    let yesBtnScale = 1;
+
+    yesBtn.addEventListener("click", () => {
+      document.body.innerHTML = `
+        <h1 style="animation: fadeIn 2s ease-in-out;">Yippee can't wait :D</h1>
+        <img id="yay" src="yay.png" alt="yay">
+      `;
+    });
+
+    noBtn.addEventListener("click", () => {
+      noClickCount++;
+      yesBtnScale *= 1.1;
+      yesBtn.style.transform = `scale(${yesBtnScale})`;
+
+      const customMessage = "Aww, think again? 🥺"; // Replace with your own message
+      responseDiv.textContent = customMessage;
+    });
+  </script>
+  <style>
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
+</body>
+</html>
