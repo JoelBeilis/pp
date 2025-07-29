@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Promposal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PROposal</title>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <style>
     html, body {
       height: 100%;
@@ -11,57 +12,86 @@
       font-family: 'Comic Sans MS', cursive, sans-serif;
       background: url('ppbackground.jpg') no-repeat center center fixed;
       background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
       color: #fff;
       text-align: center;
-      padding-top: 100px;
+      padding: 50px 20px;
       overflow-x: hidden;
-      position: relative;
     }
+
     h1 {
       font-size: 2em;
-      margin-bottom: 40px;
-    }
-    .button-container {
-      display: flex;
-      justify-content: center;
-      gap: 60px;
-      flex-wrap: wrap;
       margin-bottom: 20px;
     }
-    button {
-      padding: 15px 30px;
-      font-size: 1em;
+
+    textarea {
+      width: 90%;
+      max-width: 600px;
+      height: 100px;
+      font-size: 1.1em;
+      padding: 12px;
+      border-radius: 12px;
       border: none;
-      border-radius: 10px;
+      resize: vertical;
+      margin: 15px auto;
+      display: block;
+    }
+
+    .button-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin: 20px 0;
+    }
+
+    button, a.share-link {
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 999px;
       cursor: pointer;
-      transition: transform 0.3s ease;
-    }
-    #yesBtn {
+      text-decoration: none;
       background-color: #ffb6c1;
+      color: black;
+      transition: background 0.3s ease, transform 0.2s ease;
+      min-width: 180px;
+      max-width: 240px;
+      width: 80%;
+      box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      display: inline-block;
     }
+
+    button:hover, a.share-link:hover {
+      background-color: #ff99aa;
+    }
+
     #noBtn {
       background-color: #db7093;
     }
+
     #response {
-      margin-top: 100px;
-      font-size: 1.5em;
+      font-size: 1.3em;
       color: #fff5f5;
+      min-height: 1.5em;
+      padding-top: 1%;
     }
-    #yippeeImage {
-      margin-top: 20px;
-      max-width: 90%;
-      height: auto;
+
+    .heart, .sparkle, .confetti {
+      position: absolute;
     }
+
     .heart {
       width: 20px;
       height: 20px;
-      position: absolute;
       background-color: pink;
       transform: rotate(45deg);
       animation: floatUp 4s linear infinite;
     }
-    .heart::before,
-    .heart::after {
+
+    .heart::before, .heart::after {
       content: "";
       width: 20px;
       height: 20px;
@@ -69,104 +99,118 @@
       background-color: pink;
       border-radius: 50%;
     }
-    .heart::before {
-      top: -10px;
-      left: 0;
-    }
-    .heart::after {
-      left: -10px;
-      top: 0;
-    }
+
+    .heart::before { top: -10px; left: 0; }
+    .heart::after { left: -10px; top: 0; }
+
     .sparkle {
-      position: absolute;
       width: 5px;
       height: 5px;
       background: white;
       border-radius: 50%;
       opacity: 0.8;
-      pointer-events: none;
       animation: sparkleFade 1s ease-out forwards;
     }
+
     .confetti {
-      position: absolute;
       width: 8px;
       height: 12px;
       background-color: hsl(var(--hue), 70%, 60%);
       animation: fall 3s linear forwards;
       opacity: 0.9;
     }
+
     @keyframes floatUp {
-      0% {
-        transform: translateY(0) scale(1) rotate(45deg);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-800px) scale(1.5) rotate(45deg);
-        opacity: 0;
-      }
+      0% { transform: translateY(0) scale(1) rotate(45deg); opacity: 1; }
+      100% { transform: translateY(-800px) scale(1.5) rotate(45deg); opacity: 0; }
     }
+
     @keyframes sparkleFade {
       0% { transform: scale(1); opacity: 1; }
       100% { transform: scale(2); opacity: 0; }
     }
+
     @keyframes fall {
       0% { transform: translateY(0) rotate(0deg); }
       100% { transform: translateY(100vh) rotate(720deg); }
     }
+
     @keyframes fadeIn {
       from { opacity: 0; }
       to { opacity: 1; }
+    }
+
+    select {
+      font-size: 1rem;
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: none;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
   <audio id="bgMusic" autoplay loop>
-    <source src="maye - Yours (Official Audio).mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
+    <source src="maye - Yours (Official Audio).mp3" type="audio/mpeg" />
   </audio>
-  <div id="content">
-    <h1 id="question">Will you go to prom with me?</h1>
-    <div class="button-container">
-      <button id="yesBtn">Yes</button>
-      <button id="noBtn">No</button>
-    </div>
-    <div id="response"></div>
+
+  <h1>Your PROposal Message</h1>
+  <textarea id="questionBox">Will you go to prom with me?</textarea>
+
+  <h1>Add Event Details</h1>
+  <textarea id="detailsBox">Friday night at the Botanical Garden 🌸 7 PM – bring your dancing shoes!</textarea>
+
+  <div style="margin-top: 10px;">
+    <label>Choose Theme:
+      <select id="themeSelector" onchange="setTheme(this.value)">
+        <option value="default">Default</option>
+        <option value="hearts">Hearts</option>
+        <option value="stars">Stars</option>
+        <option value="sunset">Sunset</option>
+      </select>
+    </label>
   </div>
+
+  <div class="button-group">
+    <button onclick="copyText()">Copy Message</button>
+    <button onclick="downloadAsImage()">Download as Image</button>
+  </div>
+
+  <div class="button-group">
+    <button onclick="downloadICS()">Add to Calendar</button>
+    <a class="share-link" href="#" id="whatsappShare" target="_blank">Send via WhatsApp</a>
+  </div>
+
+  <div class="button-group">
+    <button id="yesBtn">Yes</button>
+    <button id="noBtn">No</button>
+  </div>
+
+  <div id="response"></div>
 
   <script>
     const yesBtn = document.getElementById("yesBtn");
     const noBtn = document.getElementById("noBtn");
+    const questionBox = document.getElementById("questionBox");
+    const detailsBox = document.getElementById("detailsBox");
+    const whatsappLink = document.getElementById("whatsappShare");
     const responseDiv = document.getElementById("response");
-    const contentDiv = document.getElementById("content");
-    const bgMusic = document.getElementById("bgMusic");
+    const themeSelector = document.getElementById("themeSelector");
 
     let noClickCount = 0;
     let yesBtnScale = 1;
 
     const noMessages = [
-      "What??",
-      "Did you misclick?",
-      "click the other button girl",
-      "ok you're starting to hurt my feelings",
-      "Don't make me beg...",
-      "why did i even put this button in",
-      "ok fine just go with zoe at this point",
-      "why are you still clicking no?",
-      "I hate you",
-      "yes is that way <----",
-      "fuck you monkey rat dipshit dumbass pathetic lemon",
-      "kys (no you don't get to punch me)",
-      "I'm running out of things to say just click yes",
-      "STOPPP!!!!",
-      "you're dead to me.",
-      "FINAL OFFER: i'll shank you :D"
+      "What??", "Did you misclick?", "click the other button girl", "ok you're starting to hurt my feelings",
+      "Don't make me beg...", "why did i even put this button in", "ok fine just go without me",
+      "why are you still clicking no?", "Im very much quite sad now", "yes is that way <----",
+      "you pathetic lemon", "red octagon sign", "I'm running out of things to say just click yes",
+      "STOPPP!!!!", "last chance...", "FINAL OFFER: REVERSE NO"
     ];
 
-    function playMusic() {
-      bgMusic.play().catch(() => {});
-    }
-    document.addEventListener('click', playMusic, { once: true });
-    document.addEventListener('DOMContentLoaded', playMusic);
+    document.addEventListener('click', () => {
+      document.getElementById("bgMusic").play().catch(() => {});
+    }, { once: true });
 
     function createHeart() {
       const heart = document.createElement('div');
@@ -206,9 +250,9 @@
       createSparkles(e.clientX, e.clientY);
       launchConfetti();
       setTimeout(() => {
-        contentDiv.innerHTML = `
-          <h1 style="animation: fadeIn 2s ease-in-out;">Yippee can't wait :D</h1>
-          <img id="yay" src="yay.png" alt="yay">
+        document.body.innerHTML = `
+          <h1 style="animation: fadeIn 2s ease-in-out;">Yippeeeeee! YAHOOO!!! 😄</h1>
+          <h2 style="animation: fadeIn 2s ease-in-out; font-weight: normal;">I'm quite very happy now headnod!</h2>
         `;
       }, 500);
     });
@@ -217,13 +261,93 @@
       noClickCount++;
       yesBtnScale *= 1.1;
       yesBtn.style.transform = `scale(${yesBtnScale})`;
-
-      if (noClickCount <= noMessages.length) {
-        responseDiv.textContent = noMessages[noClickCount - 1];
-      } else {
-        responseDiv.textContent = noMessages[noMessages.length - 1];
-      }
+      responseDiv.textContent = noMessages[Math.min(noClickCount - 1, noMessages.length - 1)];
     });
+
+    function copyText() {
+      const combined = `${questionBox.value}\n\nDetails:\n${detailsBox.value}`;
+      navigator.clipboard.writeText(combined).then(() => alert("Copied! Paste it anywhere you like."));
+    }
+
+    function updateShareLink() {
+      const combined = `${questionBox.value}\n\nDetails:\n${detailsBox.value}`;
+      whatsappLink.href = `https://wa.me/?text=${encodeURIComponent(combined)}`;
+    }
+
+    questionBox.addEventListener("input", updateShareLink);
+    detailsBox.addEventListener("input", updateShareLink);
+    updateShareLink();
+
+    function downloadAsImage() {
+      const messageContainer = document.createElement('div');
+      messageContainer.style.padding = '20px';
+      messageContainer.style.fontFamily = "'Comic Sans MS', cursive";
+      messageContainer.style.background = '#fff';
+      messageContainer.style.color = '#000';
+      messageContainer.style.width = '400px';
+      messageContainer.innerHTML = `
+        <h2>${questionBox.value}</h2>
+        <pre style="white-space: pre-wrap;">${detailsBox.value}</pre>
+      `;
+      document.body.appendChild(messageContainer);
+
+      html2canvas(messageContainer).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'promposal-message.png';
+        link.href = canvas.toDataURL();
+        link.click();
+        document.body.removeChild(messageContainer);
+      });
+    }
+
+    function downloadICS() {
+      const title = questionBox.value;
+      const description = detailsBox.value;
+      const startDate = new Date();
+      const endDate = new Date(startDate.getTime() + 2 * 60 * 60 * 1000);
+
+      const pad = n => String(n).padStart(2, '0');
+      const formatDate = d => `${d.getUTCFullYear()}${pad(d.getUTCMonth() + 1)}${pad(d.getUTCDate())}T${pad(d.getUTCHours())}${pad(d.getUTCMinutes())}00Z`;
+
+      const icsContent = `BEGIN:VCALENDAR
+VERSION:2.0
+BEGIN:VEVENT
+SUMMARY:${title}
+DESCRIPTION:${description}
+DTSTART:${formatDate(startDate)}
+DTEND:${formatDate(endDate)}
+END:VEVENT
+END:VCALENDAR`;
+
+      const blob = new Blob([icsContent], { type: 'text/calendar' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'prom-event.ics';
+      link.click();
+    }
+
+    function setTheme(theme) {
+      const body = document.body;
+      switch (theme) {
+        case 'default':
+          body.style.backgroundImage = "url('ppbackground.jpg')";
+          break;
+        case 'hearts':
+          body.style.backgroundImage = "url('hearts.webp')";
+          break;
+        case 'stars':
+          body.style.backgroundImage = "url('stars.jpg')";
+          break;
+        case 'sunset':
+          body.style.backgroundImage = "url('sunset.jpeg')";
+          break;
+        default:
+          body.style.backgroundImage = "url('ppbackground.jpg')";
+      }
+      body.style.backgroundSize = "cover";
+      body.style.backgroundRepeat = "no-repeat";
+      body.style.backgroundPosition = "center center";
+    }
   </script>
 </body>
 </html>
